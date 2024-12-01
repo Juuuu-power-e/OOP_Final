@@ -11,9 +11,12 @@ import java.util.Vector;
 
 public class DataAccessObject {
 
+	private final String path = System.getProperty("user.dir") + "/lms_server_final/data/";
+
 	public MModel getAModel(String fileName, Class<?> clazz, String key) {
-		try {			
-			Scanner scanner = new Scanner(new File("data/"+ fileName+".txt"));
+		try {
+
+			Scanner scanner = new Scanner(new File(path + fileName+".txt"));
 			Constructor<?> constructor = clazz.getConstructor();
 			MModel mModel = (MModel) constructor.newInstance();
 			while (scanner.hasNext()) {
@@ -32,7 +35,7 @@ public class DataAccessObject {
 	public Vector<MModel> getModels(String fileName, Class<?> clazz) {
 		Vector<MModel> mModels = new Vector<MModel>();
 		try {			
-			Scanner scanner = new Scanner(new File("data/"+ fileName+".txt"));
+			Scanner scanner = new Scanner(new File(path + fileName+".txt"));
 			while (scanner.hasNext()) {
 				Constructor<?> contstructor = clazz.getConstructor();
 				MModel mModel = (MModel) contstructor.newInstance();
@@ -48,7 +51,7 @@ public class DataAccessObject {
 
 	public void save(String fileName, Vector<MModel> mModels) {
 		try {
-			PrintWriter printWriter = new PrintWriter(new File("data/"+fileName+".txt"));
+			PrintWriter printWriter = new PrintWriter(new File(path + fileName+".txt"));
 			for (MModel mModel: mModels) {
 				mModel.save(printWriter);
 			}

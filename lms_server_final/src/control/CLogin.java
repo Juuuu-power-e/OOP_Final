@@ -18,6 +18,7 @@ public class CLogin implements ILogin {
 		MLogin mLogin = (MLogin) dataAccessObject.getAModel("UserId", MLogin.class, vLogin.getUserId());
 		if (mLogin != null) {
 			if (vLogin.getPassword().contentEquals(mLogin.getPassword())) {
+				System.out.println(vLogin.getPassword()+" "+vLogin.getUserId());
 				vResult = new VResult();
 			} else {
 				// password mismatch
