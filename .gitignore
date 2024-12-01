@@ -1,0 +1,16 @@
+# Eclipse-specific files
+.classpath
+.project
+.settings/
+
+# IntelliJ-specific files
+.idea/
+*.iml
+
+# Binary and output directories
+bin/
+out/
+
+# Dependency JARs
+mysql-connector-j-9.1.0/
+*.jar
