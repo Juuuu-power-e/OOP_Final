@@ -2,7 +2,7 @@ package control;
 
 import java.util.Vector;
 
-import model.DataAccessObject;
+import model.Dao;
 import model.MGangjwa;
 import model.MModel;
 import remoteInterface.IGangjwa;
@@ -13,8 +13,8 @@ public class CGangjwa implements IGangjwa{
 	}
 	
 	public Vector<VGangjwa> getData(String fileName) {
-		DataAccessObject dataAccessObject = new DataAccessObject();
-		Vector<MModel> mModels = dataAccessObject.getModels(fileName, MGangjwa.class);
+		Dao dao = new Dao();
+		Vector<MModel> mModels = dao.getModels(fileName, MGangjwa.class);
 		
 		Vector<VGangjwa> vGangjwas = new Vector<VGangjwa>();
 		for (MModel mModel: mModels) {			

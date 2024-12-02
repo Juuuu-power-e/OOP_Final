@@ -9,7 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;
 import java.util.Vector;
 
-public class DataAccessObject {
+public class Dao {
 
 	private final String path = System.getProperty("user.dir") + "/lms_server_final/data/";
 

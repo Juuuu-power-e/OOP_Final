@@ -1,6 +1,6 @@
 package control;
 
-import model.DataAccessObject;
+import model.Dao;
 import model.MLogin;
 import remoteInterface.ILogin;
 import valueObject.VLogin;
@@ -14,8 +14,8 @@ public class CLogin implements ILogin {
 	public VResult login(VLogin vLogin) {
 		VResult vResult = null;
 		
-		DataAccessObject dataAccessObject = new DataAccessObject();
-		MLogin mLogin = (MLogin) dataAccessObject.getAModel("UserId", MLogin.class, vLogin.getUserId());
+		Dao dao = new Dao();
+		MLogin mLogin = (MLogin) dao.getAModel("UserId", MLogin.class, vLogin.getUserId());
 		if (mLogin != null) {
 			if (vLogin.getPassword().contentEquals(mLogin.getPassword())) {
 				System.out.println(vLogin.getPassword()+" "+vLogin.getUserId());

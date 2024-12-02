@@ -2,7 +2,7 @@ package control;
 
 import java.util.Vector;
 
-import model.DataAccessObject;
+import model.Dao;
 import model.MDirectory;
 import model.MModel;
 import remoteInterface.IDirectory;
@@ -14,8 +14,8 @@ public class CDirectory implements IDirectory{
 	}
 	
 	public Vector<VDirectory> getData(String fileName) {
-		DataAccessObject dataAccessObject = new DataAccessObject();
-		Vector<MModel> mModels = dataAccessObject.getModels(fileName, MDirectory.class);
+		Dao dao = new Dao();
+		Vector<MModel> mModels = dao.getModels(fileName, MDirectory.class);
 		
 		Vector<VDirectory> vDrectories = new Vector<VDirectory>();
 		for (MModel mModel: mModels) {
