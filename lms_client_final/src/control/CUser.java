@@ -9,13 +9,12 @@ import constants.Cofiguration;
 import remoteInterface.IUser;
 import valueObject.VUser;
 
-public class CUser implements IUser {
+public class CUser extends CControl implements IUser {
 
 	private IUser iUser;
-	private Registry registry;
-	
+
 	public CUser() throws RemoteException, NotBoundException {
- 		this.registry = LocateRegistry.getRegistry(Cofiguration.PORT_NUM);
+ 		super();
 		this.iUser = (IUser) this.registry.lookup(IUser.OBJECT_NAME);
 	}
 	
