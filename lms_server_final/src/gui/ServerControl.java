@@ -1,11 +1,13 @@
 package gui;
 
 import aspect.LogManager;
+import constants.LanguageManager;
+import constants.TextObserver;
 import main.ServerMain;
 
 import javax.swing.*;
 
-public class ServerControl {
+public class ServerControl implements TextObserver {
     private JButton startButton;
     private JButton stopButton;
     private JLabel serverStatusLabel;
@@ -46,5 +48,13 @@ public class ServerControl {
 
     public boolean isRunning() {
         return bRunning;
+    }
+
+    @Override
+    public void onLanguageChanged() {
+        startButton.setText(LanguageManager.getInstance().get("button.start"));
+        stopButton.setText(LanguageManager.getInstance().get("button.stop"));
+        serverStatusLabel.setText(LanguageManager.getInstance().get("label.status") + ": " +
+                (bRunning ? LanguageManager.getInstance().get("label.running") : LanguageManager.getInstance().get("label.stopped")));
     }
 }
