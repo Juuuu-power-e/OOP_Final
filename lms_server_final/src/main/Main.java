@@ -1,15 +1,18 @@
 package main;
 
 import gui.ServerGUI;
+import test.TestExceptionFrame;
 
 public class Main {
 
     private ServerMain serverMain;
     private ServerGUI serverGUI;
+    private TestExceptionFrame testExceptionFrame;
 
     public Main() {
         serverMain = new ServerMain();
         serverGUI = new ServerGUI();
+        testExceptionFrame = new TestExceptionFrame();
     }
 
     public void initialize(){
@@ -20,6 +23,7 @@ public class Main {
 
     public void run(){
         serverGUI.run();
+        testExceptionFrame.run();
     }
 
     public static void main(String[] args) {

@@ -1,8 +1,12 @@
 package aspect;
 
+import java.util.Arrays;
+
 public class ExceptionManager {
 	
 	public void process(Exception e) {
-		e.printStackTrace();
+		LogManager.getInstance().log(e.getStackTrace());
+		LogManager.getInstance().log(e.getMessage());
+		LogManager.getInstance().flushLogFile();
 	}
 }
