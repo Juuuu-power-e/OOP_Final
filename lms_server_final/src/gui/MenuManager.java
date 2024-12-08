@@ -112,6 +112,7 @@ public class MenuManager {
         try (FileOutputStream fos = new FileOutputStream(Configuration.CONFIG_FILE_PATH)) {
             properties.store(fos, "Updated " + key);
             JOptionPane.showMessageDialog(parent, "설정이 성공적으로 업데이트되었습니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
+            LogManager.getInstance().log("Updated " + key +" to " + value);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(parent, "설정 파일을 업데이트하는 중 오류가 발생했습니다.", "오류", JOptionPane.ERROR_MESSAGE);
         }
