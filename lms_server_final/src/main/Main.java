@@ -1,41 +1,31 @@
 package main;
 
-import java.rmi.AlreadyBoundException;
-import java.rmi.RemoteException;
-
-import aspect.ExceptionManager;
+import gui.ServerGUI;
 
 public class Main {
 
-	private Skeleton skeleton;
-	private ExceptionManager exceptionManager;
-	
-	public Main() {
-		try {
-			this.skeleton = new Skeleton();
-			this.exceptionManager = new ExceptionManager();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			exceptionManager.process(e);
-		}
-	}
-	
-	private void intialize() {
-		try {
-			this.skeleton.initialie();
-		} catch (RemoteException | AlreadyBoundException e) {
-			// TODO Auto-generated catch block
-			exceptionManager.process(e);
-		}
-	}
+    private ServerMain serverMain;
+    private ServerGUI serverGUI;
 
-	private void run() {
-		this.skeleton.run();
-	}
+    public Main() {
+        serverMain = new ServerMain();
+        serverGUI = new ServerGUI();
+    }
 
-	public static void main(String[] args) {
-		Main main = new Main();
-		main.intialize();	
-		main.run();
-	}
+    public void initialize(){
+        serverMain.initialize();
+        serverGUI.associate(serverMain);
+        serverGUI.initialize();
+    }
+
+    public void run(){
+        serverGUI.run();
+    }
+
+    public static void main(String[] args) {
+        Main main = new Main();
+        main.initialize();
+        main.run();
+    }
+
 }

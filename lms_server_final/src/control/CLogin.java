@@ -14,6 +14,7 @@ public class CLogin extends CControl implements ILogin {
 	}
 
 	public VResult login(VLogin vLogin) {
+		log(vLogin);
 		VResult vResult = null;
 		
 		MLogin mLogin = (MLogin) dao.getARow("UserId", vLogin.getUserId(), MLogin.class);
@@ -26,7 +27,7 @@ public class CLogin extends CControl implements ILogin {
 			}
 		} else {
 			// no userId
-		}		
+		}
 		return vResult;
 	}
 }
