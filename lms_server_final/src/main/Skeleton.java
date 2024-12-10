@@ -15,6 +15,7 @@ import control.CLogin;
 import control.CResult;
 import control.CUser;
 import model.Dao;
+import model.DaoDB;
 import model.DaoFile;
 import remoteInterface.IDirectory;
 import remoteInterface.IGangjwa;
@@ -38,9 +39,8 @@ public class Skeleton {
 		logManager.log("registry bound: " + objectName);
 	}
 	
-	public void initialie() throws RemoteException, AlreadyBoundException {
+	public void initialie(Dao dao) throws RemoteException, AlreadyBoundException {
 
-		Dao dao = new DaoFile();
 		this.register(ILogin.OBJECT_NAME, new CLogin(dao));
 		this.register(IUser.OBJECT_NAME, new CUser(dao));
 		this.register(IResult.OBJECT_NAME, new CResult(dao));

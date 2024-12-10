@@ -73,7 +73,7 @@ public class PMainFrame extends JFrame{
 	}
 	private void finish() {
 		this.pSugangSincheongPanel.finish();
-		System.out.println("save");
+		LogManager.getInstance().log("save");
 	}
 
 	private void handleAction(ActionEvent e) {

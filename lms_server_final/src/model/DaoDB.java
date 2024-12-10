@@ -1,101 +1,115 @@
 package model;
+import aspect.LogManager;
+import constants.Configuration;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.Scanner;
+import java.sql.*;
 import java.util.Vector;
+
 
 public class DaoDB implements Dao {
 
-	private final String path = System.getProperty("user.dir") + "/lms_server_final/data/";
+	private static final String URL = Configuration.loadConfig("URL");
+	private static final String USER = Configuration.loadConfig("USER");
+	private static final String PASSWORD = Configuration.loadConfig("PASSWORD");
 
-	public MModel getARow(String fileName, String key, Class<?> clazz) {
-		try {
+	private Connection getConnection() throws SQLException {
+		return DriverManager.getConnection(URL, USER, PASSWORD);
+	}
 
+	@Override
+	public MModel getARow(String tableName, String key, Class<?> clazz) {
+		String query = "SELECT * FROM " + tableName + " WHERE field1 = ?";
+		LogManager.getInstance().log(query); // 로그 출력
+		try (Connection conn = getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-			Scanner scanner = new Scanner(new File(path + fileName+".txt"));
-			Constructor<?> constructor = clazz.getConstructor();
-			MModel mModel = (MModel) constructor.newInstance();
-			while (scanner.hasNext()) {
-				String mModelKey = read(mModel, scanner);
-				if (key.contentEquals(mModelKey)) {
-					return mModel;
-				} 
+			pstmt.setString(1, key); // field1 값으로 검색
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				MModel mModel = (MModel) clazz.getConstructor().newInstance();
+				Field[] fields = clazz.getDeclaredFields();
+
+				// ResultSet 데이터를 객체 필드에 동적으로 매핑
+				for (int i = 0; i < fields.length; i++) {
+					if (i < rs.getMetaData().getColumnCount()) { // 컬럼 수만큼 매핑
+						fields[i].setAccessible(true);
+						fields[i].set(mModel, rs.getObject(i + 1)); // ResultSet은 1-based index
+					}
+				}
+				return mModel;
 			}
-			scanner.close();
-		} catch (FileNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public Vector<MModel> getRows(String fileName, Class<?> clazz) {
-		Vector<MModel> mModels = new Vector<MModel>();
-		try {			
-			Scanner scanner = new Scanner(new File(path + fileName+".txt"));
-			while (scanner.hasNext()) {
-				Constructor<?> constructor = clazz.getConstructor();
-				MModel mModel = (MModel) constructor.newInstance();
-				read(mModel, scanner);
+	@Override
+	public Vector<MModel> getRows(String tableName, Class<?> clazz) {
+		String query = "SELECT * FROM " + tableName;
+		LogManager.getInstance().log(query); // 로그 출력
+		Vector<MModel> mModels = new Vector<>();
+		try (Connection conn = getConnection();
+			 Statement stmt = conn.createStatement();
+			 ResultSet rs = stmt.executeQuery(query)) {
+
+			while (rs.next()) {
+				MModel mModel = (MModel) clazz.getConstructor().newInstance();
+				Field[] fields = clazz.getDeclaredFields();
+
+				// ResultSet 데이터를 객체 필드에 동적으로 매핑
+				for (int i = 0; i < fields.length; i++) {
+					if (i < rs.getMetaData().getColumnCount()) { // 컬럼 수만큼 매핑
+						fields[i].setAccessible(true);
+						fields[i].set(mModel, rs.getObject(i + 1)); // ResultSet은 1-based index
+					}
+				}
 				mModels.add(mModel);
 			}
-			scanner.close();
-		} catch (FileNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return mModels;
 	}
 
 	@Override
-	public void setARow(String fileName, String key, Vector<MModel> mModels) {
+	public void setARow(String tableName, String key, Vector<MModel> mModels) {
+		if (mModels.isEmpty()) return;
 
-	}
+		StringBuilder queryBuilder = new StringBuilder("INSERT INTO " + tableName + " VALUES (");
+		int fieldsCount = mModels.get(0).getClass().getDeclaredFields().length;
+		queryBuilder.append("?,".repeat(fieldsCount));
+		queryBuilder.setLength(queryBuilder.length() - 1); // 마지막 쉼표 제거
+		queryBuilder.append(")");
+		String query = queryBuilder.toString();
+		LogManager.getInstance().log(query); // 로그 출력
 
-	public void setRows(String fileName, Vector<MModel> mModels) {
-		try {
-			PrintWriter printWriter = new PrintWriter(new File(path + fileName+".txt"));
-			for (MModel mModel: mModels) {
-				save(mModel, printWriter);
+		try (Connection conn = getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+			for (MModel mModel : mModels) {
+				int index = 1;
+				for (Field field : mModel.getClass().getDeclaredFields()) {
+					field.setAccessible(true);
+					pstmt.setObject(index++, field.get(mModel));
+				}
+				pstmt.addBatch();
 			}
-			printWriter.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		
-	}
-	public String read(MModel mModel, Scanner scanner) {
-		String key = null;
-		try {
-			Field[] fields = mModel.getClass().getDeclaredFields();
-			for (Field field: fields) {
-				String fieldValue = scanner.next();
-				field.setAccessible(true);
-				field.set(mModel, fieldValue);
-			}
-			key = (String) fields[0].get(mModel);
-		} catch (IllegalArgumentException | IllegalAccessException e) {
+			pstmt.executeBatch();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return key;
 	}
 
-	private void save(MModel mModel, PrintWriter printWriter) {
-		try {
-			Field[] fields = mModel.getClass().getDeclaredFields();
-			for (Field field: fields) {
-				field.setAccessible(true);
-				printWriter.print(field.get(mModel)+" ");
-			}
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
+	@Override
+	public void setRows(String tableName, Vector<MModel> mModels) {
+		setARow(tableName, null, mModels);
+	}
+
+	private String generatePlaceholders(MModel mModel) {
+		int fieldsCount = mModel.getClass().getDeclaredFields().length;
+		return String.join(",", "?".repeat(fieldsCount).split(""));
 	}
 }

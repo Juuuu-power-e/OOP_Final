@@ -1,5 +1,7 @@
 package model;
 
+import aspect.LogManager;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -7,6 +9,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -14,14 +17,20 @@ public class DaoFile implements Dao {
 
 	private final String path = System.getProperty("user.dir") + "/lms_server_final/data/";
 
+	public DaoFile() {
+		LogManager.getInstance().log("DaoFile connected");
+	}
+
 	public MModel getARow(String fileName, String key, Class<?> clazz) {
 		try {
+			LogManager.getInstance().log("getARow"+fileName+" "+key+" "+clazz);
 			Scanner scanner = new Scanner(new File(path + fileName+".txt"));
 			Constructor<?> constructor = clazz.getConstructor();
 			MModel mModel = (MModel) constructor.newInstance();
 			while (scanner.hasNext()) {
 				String mModelKey = read(mModel, scanner);
 				if (key.contentEquals(mModelKey)) {
+					LogManager.getInstance().log("return "+mModel.toString());
 					return mModel;
 				}
 			}
@@ -34,7 +43,8 @@ public class DaoFile implements Dao {
 
 	public Vector<MModel> getRows(String fileName, Class<?> clazz) {
 		Vector<MModel> mModels = new Vector<MModel>();
-		try {			
+		try {
+			LogManager.getInstance().log("getRows"+fileName+" "+clazz);
 			Scanner scanner = new Scanner(new File(path + fileName+".txt"));
 			while (scanner.hasNext()) {
 				Constructor<?> constructor = clazz.getConstructor();
@@ -56,6 +66,7 @@ public class DaoFile implements Dao {
 
 	public void setRows(String fileName, Vector<MModel> mModels) {
 		try {
+			LogManager.getInstance().log("setRows"+fileName+" "+ Arrays.toString(mModels.toArray()));
 			PrintWriter printWriter = new PrintWriter(new File(path + fileName+".txt"));
 			for (MModel mModel: mModels) {
 				save(mModel, printWriter);
@@ -86,7 +97,9 @@ public class DaoFile implements Dao {
 			Field[] fields = mModel.getClass().getDeclaredFields();
 			for (Field field: fields) {
 				field.setAccessible(true);
-				printWriter.print(field.get(mModel)+" ");
+				String s = field.get(mModel)+"\n";
+				LogManager.getInstance().log("save"+s);
+				printWriter.print(s);
 			}
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();

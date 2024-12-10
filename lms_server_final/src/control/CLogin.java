@@ -1,5 +1,6 @@
 package control;
 
+import aspect.LogManager;
 import model.Dao;
 import model.DaoFile;
 import model.MLogin;
@@ -20,7 +21,7 @@ public class CLogin extends CControl implements ILogin {
 		MLogin mLogin = (MLogin) dao.getARow("UserId", vLogin.getUserId(), MLogin.class);
 		if (mLogin != null) {
 			if (vLogin.getPassword().contentEquals(mLogin.getPassword())) {
-				System.out.println(vLogin.getPassword()+" "+vLogin.getUserId());
+				LogManager.getInstance().log(vLogin.getPassword()+" "+vLogin.getUserId());
 				vResult = new VResult();
 			} else {
 				// password mismatch
