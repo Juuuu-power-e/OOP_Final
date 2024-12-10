@@ -14,3 +14,4 @@ out/
 # Dependency JARs
 mysql-connector-j-9.1.0/
 *.jar
+/lms_server_final/log
