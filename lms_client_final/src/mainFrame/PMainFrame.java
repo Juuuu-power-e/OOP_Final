@@ -95,11 +95,46 @@ public class PMainFrame extends JFrame{
 				updateText();
             }
             case accountInfo -> {
+				showAccountInfo();
             }
             case showTimeTable -> {
             }
         }
 	}
+
+	private void showAccountInfo() {
+		// Create a JDialog for the popup
+		JDialog dialog = new JDialog(this, "계정 정보", true);
+		dialog.setSize(300, 200);
+		dialog.setLayout(new BorderLayout());
+
+		// Create a panel to hold user information
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(3, 2));
+
+		// Add labels and values for user information
+		panel.add(new JLabel("ID:"));
+		panel.add(new JLabel(vUser.getUserId()));
+
+		panel.add(new JLabel("이름:"));
+		panel.add(new JLabel(vUser.getName()));
+
+		panel.add(new JLabel("주소:"));
+		panel.add(new JLabel(vUser.getAddress()));
+
+		// Add the panel to the dialog
+		dialog.add(panel, BorderLayout.CENTER);
+
+		// Add a button to close the dialog
+		JButton closeButton = new JButton("닫기");
+		closeButton.addActionListener(e -> dialog.dispose());
+		dialog.add(closeButton, BorderLayout.SOUTH);
+
+		// Set the dialog to be visible
+		dialog.setLocationRelativeTo(this); // Center relative to the parent frame
+		dialog.setVisible(true);
+	}
+
 
 	private void printResult() {
 		PDFPrinter pdfPrinter = new PDFPrinter();
