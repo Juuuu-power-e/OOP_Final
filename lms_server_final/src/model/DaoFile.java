@@ -16,7 +16,6 @@ public class DaoFile implements Dao {
 
 	public MModel getARow(String fileName, String key, Class<?> clazz) {
 		try {
-
 			Scanner scanner = new Scanner(new File(path + fileName+".txt"));
 			Constructor<?> constructor = clazz.getConstructor();
 			MModel mModel = (MModel) constructor.newInstance();

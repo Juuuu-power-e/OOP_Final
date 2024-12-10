@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import constants.Constants.EConfigurations;
+import constants.Configuration;
 import valueObject.VGangjwa;
 import valueObject.VUser;
 
@@ -53,8 +53,8 @@ public class PContentPanel extends JPanel {
 	public void intialize(VUser vUser) {
 		this.vUser = vUser;	
 		
-		this.pMiridamgiPanel.initialize(this.vUser.getUserId()+EConfigurations.miridamgiFilePostfix.getText());
-		this.pSincheongPanel.initialize(this.vUser.getUserId()+EConfigurations.singcheongFilePostfix.getText());
+		this.pMiridamgiPanel.initialize(this.vUser.getUserId()+ Configuration.miridamgiFilePostfix);
+		this.pSincheongPanel.initialize(this.vUser.getUserId()+ Configuration.singcheongFilePostfix);
 		
 		this.pSelectionPanel.initialize(this.pMiridamgiPanel, this.pSincheongPanel);
 		
@@ -63,8 +63,8 @@ public class PContentPanel extends JPanel {
 	}
 	
 	public void finish() {
-		this.pMiridamgiPanel.finish(this.vUser.getUserId()+EConfigurations.miridamgiFilePostfix.getText());
-		this.pSincheongPanel.finish(this.vUser.getUserId()+EConfigurations.singcheongFilePostfix.getText());
+		this.pMiridamgiPanel.finish(this.vUser.getUserId()+ Configuration.miridamgiFilePostfix);
+		this.pSincheongPanel.finish(this.vUser.getUserId()+ Configuration.singcheongFilePostfix);
 	}
 	
 	/////////////////////////////////////////////////////////////
@@ -73,7 +73,11 @@ public class PContentPanel extends JPanel {
 	public void update(Object source) {
 		this.pSelectionPanel.update(source);
 	}
-	
+
+	public Vector<VGangjwa> getResult() {
+		return pSelectionPanel.getResult();
+	}
+
 	public class ListSelectionHandler implements ListSelectionListener {
 		@Override
 		public void valueChanged(ListSelectionEvent event) {

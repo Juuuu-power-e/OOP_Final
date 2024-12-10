@@ -17,13 +17,16 @@ public class Main {
 		this.exceptionManager = new ExceptionManager();
 		try {
 			this.pLoginDialog = new PLoginDialog(new ActionHandler());
-		} catch (RemoteException | NotBoundException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			exceptionManager.process(e);
 		}
 	}
 	private void intialize() {
-		this.pLoginDialog.initialize();
+		try {
+			this.pLoginDialog.initialize();
+		} catch (Exception e) {
+			exceptionManager.process(e);
+		}
 	}
 	
 	private void validateUser(Object source) {

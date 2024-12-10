@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import constants.Configuration;
 import constants.Constants.ELoginDialog;
 import control.CLogin;
 import control.CUser;
@@ -35,7 +36,7 @@ public class PLoginDialog extends JDialog {
 	private CUser cUser;
 	
 	public PLoginDialog(ActionHandler actionHandler) throws RemoteException, NotBoundException {
-		this.setSize(ELoginDialog.width.getInt(), ELoginDialog.height.getInt());
+		this.setSize(Configuration.LOGIN_DIALOG_WIDTH, Configuration.LOGIN_DIALOG_HEIGHT);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
@@ -45,14 +46,14 @@ public class PLoginDialog extends JDialog {
 			this.nameLabel = new JLabel(ELoginDialog.nameLabel.getText());
 			line1.add(this.nameLabel);		
 			this.nameText = new JTextField();
-			this.nameText.setColumns(ELoginDialog.sizeNameText.getInt());
+			this.nameText.setColumns(Configuration.LOGIN_DIALOG_SIZE_NAME_TEXT);
 			line1.add(this.nameText);
 		this.add(line1, BorderLayout.NORTH);		
 		JPanel line2 = new JPanel();		
 			this.passwordLabel = new JLabel(ELoginDialog.passwordLabel.getText());
 			line2.add(this.passwordLabel);		
 			this.passwordText = new JTextField();
-			this.passwordText.setColumns(ELoginDialog.sizePasswordText.getInt());
+			this.passwordText.setColumns(Configuration.LOGIN_DIALOG_SIZE_PW_TEXT);
 			line2.add(this.passwordText);
 		this.add(line2, BorderLayout.CENTER);
 		JPanel line3 = new JPanel();

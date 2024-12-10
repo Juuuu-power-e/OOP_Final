@@ -4,11 +4,11 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import constants.Cofiguration;
+import constants.Configuration;
 
 public class CControl {
 	protected Registry registry;
 	public CControl() throws RemoteException {
-		this.registry = LocateRegistry.getRegistry(Cofiguration.PORT_NUM);
+		this.registry = LocateRegistry.getRegistry(Configuration.PORT_NUM);
 	}
 }

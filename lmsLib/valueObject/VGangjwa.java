@@ -51,4 +51,9 @@ public class VGangjwa extends VValueObject {
 		this.time = time;
 	}
 
+	@Override
+	public String toString() {
+		return  id + " "+ name +' '+ lecturer + ' ' +
+				time + ' '+ credit + "학점" ;
+	}
 }

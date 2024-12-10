@@ -45,4 +45,8 @@ public class PSelectionPanel extends PGangjwaContainer {
 		return this.pGangjwaSelectionPanel.removeSelectedGangjwas();
 	}
 
+    public Vector<VGangjwa> getResult() {
+
+		return pGangjwaSelectionPanel.getResult();
+	}
 }
