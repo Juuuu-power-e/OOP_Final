@@ -17,6 +17,7 @@ public class Main {
 
     public void initialize(){
         serverMain.initialize();
+        testExceptionFrame.registerExceptionManager(serverMain.getExceptionManager());
         serverGUI.associate(serverMain);
         serverGUI.initialize();
     }

@@ -8,6 +8,11 @@ import aspect.ExceptionManager;
 public class ServerMain {
 
 	private Skeleton skeleton;
+
+	public ExceptionManager getExceptionManager() {
+		return exceptionManager;
+	}
+
 	private ExceptionManager exceptionManager;
 
 

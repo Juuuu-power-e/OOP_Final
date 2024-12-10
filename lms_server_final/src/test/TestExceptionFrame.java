@@ -8,6 +8,8 @@ import java.util.Arrays;
 
 public class TestExceptionFrame extends JFrame {
 
+    private ExceptionManager exceptionManager;
+
     public TestExceptionFrame() {
         setTitle("Test Exceptions");
         setSize(400, 200);
@@ -37,13 +39,13 @@ public class TestExceptionFrame extends JFrame {
         // 프레임에 패널 추가
         add(buttonPanel, BorderLayout.CENTER);
 
-        // 보이기
-        setVisible(true);
+    }
+
+    public void registerExceptionManager(ExceptionManager exceptionManager) {
+        this.exceptionManager = exceptionManager;
     }
 
     private void handleException(Exception e) {
-        ExceptionManager exceptionManager = new ExceptionManager();
-        exceptionManager.process(e);
 
         // 사용자에게 익셉션 발생을 알림
         JOptionPane.showMessageDialog(
@@ -52,10 +54,17 @@ public class TestExceptionFrame extends JFrame {
                 "Exception Occurred",
                 JOptionPane.ERROR_MESSAGE
         );
+        try{
+            throw e;
+        } catch (Exception ex) {
+            exceptionManager.process(ex);
+        }
     }
 
     public void run() {
-        SwingUtilities.invokeLater(TestExceptionFrame::new);
+        SwingUtilities.invokeLater(()->{
+            this.setVisible(true);
+        });
     }
 
     // 사용자 정의 예외

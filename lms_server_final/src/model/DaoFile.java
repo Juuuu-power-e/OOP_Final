@@ -24,7 +24,7 @@ public class DaoFile implements Dao {
 				String mModelKey = read(mModel, scanner);
 				if (key.contentEquals(mModelKey)) {
 					return mModel;
-				} 
+				}
 			}
 			scanner.close();
 		} catch (FileNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
