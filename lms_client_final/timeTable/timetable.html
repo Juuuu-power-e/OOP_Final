@@ -1,0 +1,131 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>강의 시간표</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+            .timetable {
+                display: grid;
+                grid-template-columns: 120px repeat(5, 1fr); /* 시간 열 고정, 요일 열은 균등 분할 */
+                grid-template-rows: 50px repeat(12, 60px); /* 시간대별 높이 */
+                gap: 1px;
+                background-color: #ccc;
+            }
+            .time, .day, .class {
+                background-color: white;
+                text-align: center;
+                border: 1px solid #ddd;
+            }
+            .time {
+                background-color: #f0f0f0;
+                font-weight: bold;
+            }
+            .day {
+                background-color: #0078d4;
+                color: white;
+                font-weight: bold;
+            }
+            .class {
+                background-color: #d0f0d0;
+                text-align: center;
+            }
+            .class span {
+                display: block;
+            }
+            .header {
+                grid-column: 1 / span 6;
+                text-align: center;
+                background-color: #005bb5;
+                color: white;
+                padding: 10px;
+                font-size: 1.2em;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">강의 시간표</div>
+        <div class="timetable">
+            <div class="time"></div>
+            <div class="day">월요일</div>
+            <div class="day">화요일</div>
+            <div class="day">수요일</div>
+            <div class="day">목요일</div>
+            <div class="day">금요일</div>
+<div class="time">09:00</div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div class="time">10:00</div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div class="time">11:00</div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div class="time">12:00</div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div class="time">13:00</div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div class="time">14:00</div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div class="time">15:00</div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div class="time">16:00</div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div class="time">17:00</div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div class="time">18:00</div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div class="time">19:00</div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div class="class" style="grid-row: 164 / 7; grid-column: 2;"><span>미생물학</span><span>이상희</span></div>
+<div class="class" style="grid-row: 5 / 7; grid-column: 2;"><span>영어1</span><span>여인욱</span></div>
+<div class="class" style="grid-row: 5 / 7; grid-column: 4;"><span>영어1</span><span>여인욱</span></div>
+<div class="class" style="grid-row: 164 / 7; grid-column: 5;"><span>바이러스학</span><span>이원근</span></div>
+    </div>
+</body>
+</html>

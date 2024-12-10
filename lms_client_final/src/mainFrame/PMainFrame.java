@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.*;
 
+import aspect.LogManager;
 import constants.Configuration;
 import constants.Constants;
 import constants.LanguageManager;
@@ -23,7 +24,7 @@ public class PMainFrame extends JFrame{
 	private static final long serialVersionUID = 1L;	
 	// components	
 	private PMenuBar pMenuBar;
-	private PToolBar pToolBar;
+	private JLabel timeLabel;
 	private PSugangSincheongPanel pSugangSincheongPanel;
 	// utility
 	private WindowListener windowsHandler;
@@ -48,15 +49,17 @@ public class PMainFrame extends JFrame{
 		// components
 		this.pMenuBar = new PMenuBar(menuActionListener);
 		this.setJMenuBar(this.pMenuBar);
-		
-		this.pToolBar = new PToolBar();
-		this.add(this.pToolBar, BorderLayout.NORTH);
+
+		JPanel statusPanel = new JPanel(new BorderLayout());
+		this.timeLabel = new JLabel();
+		statusPanel.add(timeLabel, BorderLayout.EAST);
+		this.add(statusPanel, BorderLayout.NORTH);
+		new TimeManager(timeLabel).startUpdatingTime();
 		
 		this.pSugangSincheongPanel = new PSugangSincheongPanel();
 		this.add(this.pSugangSincheongPanel, BorderLayout.CENTER);
 
 		LanguageManager.getInstance().registerObserver(pMenuBar);
-		LanguageManager.getInstance().registerObserver(pToolBar);
 		LanguageManager.getInstance().registerObserver(pSugangSincheongPanel);
 
 	}
@@ -64,9 +67,8 @@ public class PMainFrame extends JFrame{
 	public void initialize(VUser vUser) {
 		this.vUser = vUser;
 		this.setVisible(true);
-		
 		this.pMenuBar.initialize();
-		this.pToolBar.initialize();
+		new TimeManager(this.timeLabel);
 		this.pSugangSincheongPanel.initialize(this.vUser);
 	}
 	private void finish() {
@@ -89,6 +91,7 @@ public class PMainFrame extends JFrame{
             case changePort -> {
             }
             case changeTimeFormat -> {
+				toggleTimeFormat();
             }
             case changeLanguage -> {
 				changeLanguage();
@@ -98,9 +101,21 @@ public class PMainFrame extends JFrame{
 				showAccountInfo();
             }
             case showTimeTable -> {
+				TimetableHTMLGenerator.generateHTML(pSugangSincheongPanel.getResult());
+//				TimetableSwing.displayTimetable(pSugangSincheongPanel.getResult());
             }
         }
 	}
+	private void toggleTimeFormat() {
+		boolean currentFormat = LogManager.getInstance().isShowSeconds();
+		LogManager.getInstance().setShowSeconds(!currentFormat);
+		JOptionPane.showMessageDialog(this,
+				LanguageManager.getInstance().get("dialog.changeTimeFormat.success"),
+				LanguageManager.getInstance().get("dialog.success.title"),
+				JOptionPane.INFORMATION_MESSAGE
+		);
+	}
+
 
 	private void showAccountInfo() {
 		// Create a JDialog for the popup

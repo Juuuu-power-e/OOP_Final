@@ -236,7 +236,7 @@ public class MenuManager implements TextObserver {
     }
 
     private void changeLanguage() {
-        // 지원 언어 목록
+
 
 
         // 드롭다운 메뉴 생성
