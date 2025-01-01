@@ -97,10 +97,11 @@ public class DaoFile implements Dao {
 			Field[] fields = mModel.getClass().getDeclaredFields();
 			for (Field field: fields) {
 				field.setAccessible(true);
-				String s = field.get(mModel)+"\n";
+				String s = field.get(mModel)+" ";
 				LogManager.getInstance().log("save"+s);
 				printWriter.print(s);
 			}
+			printWriter.println();
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
